@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <title>‏Creta - Login</title>
+    <script>
+        function redirectMe() {
+            var intezmenyid = document.getElementById("intezmenyid").value;
+            var felhasznalonev = document.getElementById("felhasznalonev").value;
+            var jelszo = document.getElementById("jelszo").value;
+
+            window.location.href = `${window.location.href.replace("login", "")}${intezmenyid}/${felhasznalonev}/${jelszo}`;
+        }
+    </script>
+</head>
+<body id="main-cont">
+    <div class="container">
+        <h1>Creta (Kréta Clone)</h1>
+        <form action="javascript:void(0);">
+            <div class="mb-3">
+                <label for="intezmenyid" class="form-label">Intézmény Azonosító</label>
+                <input type="text" class="form-control" id="intezmenyid" name="cretaintezmenyid">
+            </div>
+            <div class="mb-3">
+                <label for="felhasznalonev" class="form-label">Felhasználónév</label>
+                <input type="text" class="form-control" id="felhasznalonev" name="cretafelhasznalonev">
+            </div>
+            <div class="mb-3">
+                <label for="jelszo" class="form-label">Jelszó</label>
+                <input type="text" class="form-control" id="jelszo" name="cretajelszo">
+            </div>
+            <div class="mb-3">
+                <button class="btn btn-primary mb-3 w-100" id="login">Bejelentkezés</button>
+            </div>
+            <div class="mb-3">
+                <button class="btn btn-secondary w-100" onclick="window.location.href = window.location.href.replace('login', 'settings')">Beállítások</button>
+            </div>
+        </form>
+    </div>
+    <script>
+        const loginButton = document.getElementById("login");
+        const cont = document.getElementById("main-cont");
+
+        if (localStorage.getItem("dark-mode") == "true") {
+            cont.style.backgroundColor = "#262626";
+            cont.style.color = "#ffffff";
+        }
+
+        loginButton.addEventListener("click", function(e) {
+
+            if (document.getElementById("intezmenyid").value == "" || document.getElementById("felhasznalonev").value == "" || document.getElementById("jelszo").value == "") {
+                alert("Minden mező kitöltése kötelező!");
+            } else {
+                if (localStorage.getItem("instant-login") == "true") {
+                    var intezmenyid = document.getElementById("intezmenyid").value;
+                    var felhasznalonev = document.getElementById("felhasznalonev").value;
+                    var jelszo = document.getElementById("jelszo").value;
+
+                    localStorage.setItem("instant-login-instid", intezmenyid);
+                    localStorage.setItem("instant-login-username", felhasznalonev);
+                    localStorage.setItem("instant-login-passwd", jelszo);
+
+                    window.location.href = `${window.location.href.replace("login", "")}${intezmenyid}/${felhasznalonev}/${jelszo}`;
+                } else {
+                    var intezmenyid = document.getElementById("intezmenyid").value;
+                    var felhasznalonev = document.getElementById("felhasznalonev").value;
+                    var jelszo = document.getElementById("jelszo").value;
+
+                    window.location.href = `${window.location.href.replace("login", "")}${intezmenyid}/${felhasznalonev}/${jelszo}`;
+                }
+            }
+        });
+
+        function tryLogin() {
+            if (localStorage.getItem("instant-login") == "true") {
+                if (localStorage.getItem("instant-login-instid") && localStorage.getItem("instant-login-username") && localStorage.getItem("instant-login-passwd")) {
+                    var intezmenyid = localStorage.getItem("instant-login-instid");
+                    var felhasznalonev = localStorage.getItem("instant-login-username");
+                    var jelszo = localStorage.getItem("instant-login-passwd");
+
+                    window.location.href = `${window.location.href.replace("login", "")}${intezmenyid}/${felhasznalonev}/${jelszo}`;
+                }
+            }
+        }
+
+        tryLogin();
+    </script>
+</body>
+</html>
