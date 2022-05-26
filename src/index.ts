@@ -81,25 +81,8 @@ app.get("/:inst/:user([0-9]{11})/:pass/timetable/:fromdate/:todate", async (req:
     }
     
     let sorted: any = kretaResponseBodyParsed.sort(function(a: any, b: any) { return a.Oraszam - b.Oraszam; });
-
-    // let table1;
-    // let table2;
     let table = [];
     let tableDone = "";
-
-    // for (let i = 0; i < sorted.length; i++) {
-    //     if (!sorted[i]["Nev"].includes("Vizsganap")) {
-    //         if (!sorted[i]["Nev"].includes("Tanítás nélküli munkanap")) {
-    //             table1 = table1 + "<tr>" + sorted[i]["Nev"] + "</tr>";
-    //         }
-    //     }
-    // }
-
-    // for (let i = 0; i < sorted.length; i++) {
-    //     if (sorted[i]["TanarNeve"] != null) {
-    //         table2 = table2 + "<tr>" + sorted[i]["TanarNeve"] + "</tr>";
-    //     }
-    // }
 
     for (let i = 0; i < sorted.length; i++) {
       table.push("<td>" + sorted[i]["Nev"] + "</td><td>" + sorted[i]["TanarNeve"] + "</td><td>" + sorted[i]["TeremNeve"] + "</td>");
