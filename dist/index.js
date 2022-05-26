@@ -56,7 +56,7 @@ app.get("/:inst/:user([0-9]{11})/:pass/timetable/:fromdate/:todate", async (req,
         let table = [];
         let tableDone = "";
         for (let i = 0; i < sorted.length; i++) {
-            table.push("<td>" + sorted[i]["Nev"] + "</td>" + "<td>" + sorted[i]["TanarNeve"] + "</td>");
+            table.push("<td>" + sorted[i]["Nev"] + "</td><td>" + sorted[i]["TanarNeve"] + "</td><td>" + sorted[i]["TeremNeve"] + "</td>");
         }
         for (let i = 0; i < table.length; i++) {
             tableDone += "<tr>" + table[i] + "</tr>";
