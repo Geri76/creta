@@ -8,7 +8,7 @@ app.set("view engine", "ejs");
 
 app.use(favicon(path.join(__dirname, 'views', 'images', 'creta.png')));
 
-const kretaAPIServer: any = "http://budapesti.flacker.net:3400/";
+const kretaAPIServer: any = process.env.KRETA_API_SERVER || "http://budapesti.flacker.net:3400/";
 
 // Root
 
@@ -19,13 +19,15 @@ app.get("/", async (req: any, res: any) => {
 // Login
 
 app.get("/login", async (req: any, res: any) => {
-  res.render(__dirname + "/views/" + "login");
+  res.status(200)
+    .render(__dirname + "/views/" + "login");
 });
 
 // Settings
 
 app.get("/settings", async (req: any, res: any) => {
-  res.render(__dirname + "/views/" + "settings");
+  res.status(200)
+    .render(__dirname + "/views/" + "settings");
 });
 
 // Data

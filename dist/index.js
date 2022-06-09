@@ -6,15 +6,17 @@ var path = require('path');
 var app = express();
 app.set("view engine", "ejs");
 app.use(favicon(path.join(__dirname, 'views', 'images', 'creta.png')));
-const kretaAPIServer = "http://budapesti.flacker.net:3400/";
+const kretaAPIServer = process.env.KRETA_API_SERVER || "http://budapesti.flacker.net:3400/";
 app.get("/", async (req, res) => {
     res.redirect("/login");
 });
 app.get("/login", async (req, res) => {
-    res.render(__dirname + "/views/" + "login");
+    res.status(200)
+        .render(__dirname + "/views/" + "login");
 });
 app.get("/settings", async (req, res) => {
-    res.render(__dirname + "/views/" + "settings");
+    res.status(200)
+        .render(__dirname + "/views/" + "settings");
 });
 app.get("/:inst/:user([0-9]{11})/:pass/data", async (req, res) => {
     await request(`${kretaAPIServer}getinfo?username=${req.params.user}&password=${req.params.pass}&institude=${req.params.inst}`, (error, response, body) => {
