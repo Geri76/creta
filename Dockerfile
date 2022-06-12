@@ -11,4 +11,4 @@ RUN npm run compile
 
 EXPOSE 3000
 
-CMD ["npm", "run", "dev2"]
+CMD ["npm", "run", "dev"]
