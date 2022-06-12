@@ -1,6 +1,6 @@
 {
     "compilerOptions": {
-        "outDir": "dist",
+        "outDir": "dist/",
         "removeComments": true,
         "charset": "utf8"
     },

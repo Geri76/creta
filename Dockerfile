@@ -3,8 +3,9 @@ FROM node:17
 WORKDIR /usr/src/creta
 
 COPY package*.json ./
-COPY ./src ./
-COPY ./dist ./
+COPY tsconfig.json ./
+COPY ./src ./src
+COPY ./dist ./dist
 
 RUN npm install
 RUN npm run compile
