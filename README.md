@@ -1,7 +1,7 @@
  [![Creta logo](http://creta.flacker.net/favicon.ico)](http://creta.flacker.net)
 
 # Creta
-Egy magyar nyelvű eKréta clone.
+Egy magyar nyelvű eKréta kliens.
 
 A creta a hivatalos eKréta adatbázisból kéri le az adatokat (egy köztes szerver segítségével), és továbbítja azokat a felhasználónak.
 
