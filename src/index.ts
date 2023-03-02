@@ -73,8 +73,15 @@ app.get("/:inst/:user([0-9]{11})/:pass", async (req: any, res: any) => {
 
 // Timetable
 
-app.get("/:inst/:user([0-9]{11})/:pass/timetable/:fromdate/:todate", async (req: any, res: any) => {
-  request(`${kretaAPIServer}gettimetable?username=${req.params.user}&password=${req.params.pass}&institude=${req.params.inst}&fromdate=${req.params.fromdate}&todate=${req.params.todate}`, function (error: any, response: any, body: any) {
+app.get("/:inst/:user([0-9]{11})/:pass/timetable/:date", async (req: any, res: any) => {
+  let firstDate = new Date(`${req.params.date}`);
+  let nextDate = new Date();
+  nextDate.setDate(firstDate.getDate() + 1);
+
+  let firstDateFinal = `${firstDate.getFullYear()}-${firstDate.getMonth()+1}-${firstDate.getDate()}`;
+  let nextDateFinal = `${nextDate.getFullYear()}-${nextDate.getMonth()+1}-${nextDate.getDate()}`;
+
+  request(`${kretaAPIServer}gettimetable?username=${req.params.user}&password=${req.params.pass}&institude=${req.params.inst}&fromdate=${firstDateFinal}&todate=${nextDateFinal}`, function (error: any, response: any, body: any) {
 
     let kretaResponseBodyParsed: any = JSON.parse(body);
 
@@ -96,7 +103,8 @@ app.get("/:inst/:user([0-9]{11})/:pass/timetable/:fromdate/:todate", async (req:
     }
 
     let data = {
-      table: tableDone
+      table: tableDone,
+      date: `${req.params.date}`
     };
 
     res.status(200)

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -9,16 +9,12 @@
     <script>
         const d = new Date();
 
-        const nextday1 = new Date(d.getFullYear(), d.getMonth(), d.getDate()+1);
-
-        const nextday2 = new Date(d.getFullYear(), d.getMonth(), d.getDate()+2);
-
         function redirectToData() {
             window.location.href = window.location.href + "/data";
         }
 
         function redirectToTimetable() {
-            window.location.href = window.location.href + `/timetable/${nextday1.getFullYear()}-${nextday1.getMonth() + 1}-${nextday1.getDate()}/${nextday2.getFullYear()}-${nextday2.getMonth() + 1}-${nextday2.getDate()}`;
+            window.location.href = window.location.href + `/timetable/${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
         }
     </script>
 
@@ -34,12 +30,12 @@
             </h6>
         </div>
         <div class="col p-lg-3 mt-4">
-            <a href="JavaScript:redirectToData()"><button type="button" class="btn btn-primary w-100">Adatok</button></a>
+            <button type="button" class="btn btn-primary w-100" onclick="redirectToData();">Adatok</button>
             <br><br>
-            <a href="JavaScript:redirectToTimetable()"><button type="button" class="btn btn-primary w-100">Órarend</button></a>
+            <button type="button" class="btn btn-primary w-100" onclick="redirectToTimetable();">Órarend</button>
         </div>
         <div class="col p-lg-3 mt-1">
-            <button type="button" class="btn btn-secondary w-100" id="logout">Kijelentkezés</button>
+            <button type="button" class="btn btn-danger w-100" id="logout">Kijelentkezés</button>
         </div>
     </div>
     <script>
