@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon dist/index.js",
+    "dev": "node --watch dist/index.js",
     "dev2": "tsc -w",
     "compile": "tsc --project tsconfig.json"
   },
@@ -19,7 +19,6 @@
   "dependencies": {
     "ejs": "^3.1.7",
     "express": "^4.17.3",
-    "nodemon": "^2.0.17",
     "request": "^2.88.2",
     "serve-favicon": "^2.5.0"
   }
