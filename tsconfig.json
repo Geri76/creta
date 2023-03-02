@@ -1,8 +1,7 @@
 {
     "compilerOptions": {
         "outDir": "dist/",
-        "removeComments": true,
-        "charset": "utf8"
+        "removeComments": true
     },
     "include":[ 
         "src/**/*"
