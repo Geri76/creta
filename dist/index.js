@@ -76,4 +76,6 @@ app.get("/:inst/:user([0-9]{11})/:pass/timetable/:date", async (req, res) => {
             .render(__dirname + "/views/" + "timetable", { data: data });
     });
 });
-app.listen(3000);
+app.listen(3000, () => {
+    console.log("\nServing creta!\n");
+});
