@@ -9,13 +9,6 @@
     <title>‏Creta - Timetable</title>
 </head>
 
-<%
-
-let table = data.table.replace("undefined", '');
-let tableDone = table.substring(8);
-
-%>
-
 <script>
     let firstDate = new Date(`${window.location.href.split("/")[window.location.href.split("/").length-1]}`);
     let nextDate = new Date();
@@ -64,16 +57,7 @@ let tableDone = table.substring(8);
         <div class="container">
             <p class="text-center fw-bold fs-4 mt-3"><%- data.date %></p>
         </div>
-        <table class="table table-bordered w-auto mx-auto mt-4" id="timetable">
-            <thead>
-                <th scope="col">Tantárgy</th>
-                <th scope="col">Tanár Neve</th>
-                <th scope="col">Terem</th>
-            </thead>
-            <tbody>
-                <td><%- tableDone %></td>
-            </tbody>
-        </table>
+        <%- data.table %>
     </div>
     <script>
 

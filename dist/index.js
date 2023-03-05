@@ -68,6 +68,33 @@ app.get("/:inst/:user([0-9]{11})/:pass/timetable/:date", async (req, res) => {
         for (let i = 0; i < table.length; i++) {
             tableDone += "<tr>" + table[i] + "</tr>";
         }
+        tableDone = `
+        <table class="table table-bordered w-auto mx-auto mt-4" id="timetable">
+            <thead>
+                <th scope="col">Tantárgy</th>
+                <th scope="col">Tanár Neve</th>
+                <th scope="col">Terem</th>
+            </thead>
+            <tbody>
+                <td>${tableDone}</td>
+            </tbody>
+        </table>
+    `.replace("undefined", '').substring(8);
+        const tableTemplate = `
+        <table class="table table-bordered w-auto mx-auto mt-4" id="timetable">
+            <thead>
+                <th scope="col">Tantárgy</th>
+                <th scope="col">Tanár Neve</th>
+                <th scope="col">Terem</th>
+            </thead>
+            <tbody>
+                <td></td>
+            </tbody>
+        </table>
+    `.replace("undefined", '').substring(8);
+        if (tableDone == tableTemplate) {
+            tableDone = `<p class="text-center fs-3">Nincsenek óráid! 🎉</p>`;
+        }
         let data = {
             table: tableDone,
             date: `${req.params.date}`
