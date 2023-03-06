@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "node --watch dist/index.js",
     "dev2": "tsc -w",
+    "start": "node dist/index.js",
     "compile": "tsc --project tsconfig.json"
   },
   "keywords": [],
