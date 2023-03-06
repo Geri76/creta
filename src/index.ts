@@ -104,9 +104,9 @@ app.get("/:inst/:user([0-9]{11})/:pass/timetable/:date", async (req: any, res: a
     tableDone = `
         <table class="table table-bordered w-auto mx-auto mt-4" id="timetable">
             <thead>
-                <th scope="col">Tantárgy</th>
-                <th scope="col">Tanár Neve</th>
-                <th scope="col">Terem</th>
+                <th scope="col" class="text-center">Tantárgy</th>
+                <th scope="col" class="text-center">Tanár Neve</th>
+                <th scope="col" class="text-center">Terem</th>
             </thead>
             <tbody>
                 <td>${tableDone}</td>
@@ -117,9 +117,9 @@ app.get("/:inst/:user([0-9]{11})/:pass/timetable/:date", async (req: any, res: a
     const tableTemplate = `
         <table class="table table-bordered w-auto mx-auto mt-4" id="timetable">
             <thead>
-                <th scope="col">Tantárgy</th>
-                <th scope="col">Tanár Neve</th>
-                <th scope="col">Terem</th>
+                <th scope="col" class="text-center">Tantárgy</th>
+                <th scope="col" class="text-center">Tanár Neve</th>
+                <th scope="col" class="text-center">Terem</th>
             </thead>
             <tbody>
                 <td></td>

@@ -29,13 +29,14 @@
                 Intézmény: <%= data.intezmeny %><br>
             </h6>
         </div>
-        <div class="col p-lg-3 mt-4">
-            <button type="button" class="btn btn-primary w-100" onclick="redirectToData();">Adatok</button>
-            <br><br>
-            <button type="button" class="btn btn-primary w-100" onclick="redirectToTimetable();">Órarend</button>
-        </div>
-        <div class="col p-lg-3 mt-1">
-            <button type="button" class="btn btn-danger w-100" id="logout">Kijelentkezés</button>
+        <div class="row p-lg-3 mt-4">
+            <div class="col">
+                <button type="button" class="btn btn-primary w-100" onclick="redirectToData();">Adatok</button>
+            </div>
+            <div class="col">
+                <button type="button" class="btn btn-primary w-100" onclick="redirectToTimetable();">Órarend</button>
+            </div>
+            <button type="button" class="btn btn-danger w-100 position-absolute bottom-0 start-50 translate-middle-x fs-5 rounded-0" id="logout">Kijelentkezés</button>
         </div>
     </div>
     <script>
