@@ -20,32 +20,44 @@ app.get("/settings", async (req, res) => {
 });
 app.get("/:inst/:user([0-9]{11})/:pass/data", async (req, res) => {
     await request(`${kretaAPIServer}getinfo?username=${req.params.user}&password=${req.params.pass}&institude=${req.params.inst}`, (error, response, body) => {
-        let kretaResponseBody = body;
-        let kretaResponseBodyParsed = JSON.parse(kretaResponseBody);
-        let data = {
-            intezmeny: kretaResponseBodyParsed["IntezmenyNev"],
-            nev: kretaResponseBodyParsed["Nev"],
-            cim: kretaResponseBodyParsed["Cimek"][0],
-            telefon: kretaResponseBodyParsed["Telefonszam"],
-            email: kretaResponseBodyParsed["EmailCim"],
-            resp: kretaResponseBody
-        };
-        res.status(200)
-            .render(__dirname + "/views/" + "data", { data: data });
+        try {
+            let kretaResponseBody = body;
+            let kretaResponseBodyParsed = JSON.parse(kretaResponseBody);
+            let data = {
+                intezmeny: kretaResponseBodyParsed["IntezmenyNev"],
+                nev: kretaResponseBodyParsed["Nev"],
+                cim: kretaResponseBodyParsed["Cimek"][0],
+                telefon: kretaResponseBodyParsed["Telefonszam"],
+                email: kretaResponseBodyParsed["EmailCim"],
+                resp: kretaResponseBody
+            };
+            res.status(200)
+                .render(__dirname + "/views/" + "data", { data: data });
+        }
+        catch (e) {
+            res.status(503)
+                .render(__dirname + "/views/" + "error");
+        }
     });
 });
 app.get("/:inst/:user([0-9]{11})/:pass", async (req, res) => {
     await request(`${kretaAPIServer}getinfo?username=${req.params.user}&password=${req.params.pass}&institude=${req.params.inst}`, (error, response, body) => {
-        let kretaResponseBodyParsed = JSON.parse(body);
-        var data = {
-            intezmeny: kretaResponseBodyParsed["IntezmenyNev"],
-            nev: kretaResponseBodyParsed["Nev"],
-            cim: kretaResponseBodyParsed["Cimek"][0],
-            telefon: kretaResponseBodyParsed["Telefonszam"],
-            email: kretaResponseBodyParsed["EmailCim"],
-        };
-        res.status(200)
-            .render(__dirname + "/views/" + "index", { data: data });
+        try {
+            let kretaResponseBodyParsed = JSON.parse(body);
+            var data = {
+                intezmeny: kretaResponseBodyParsed["IntezmenyNev"],
+                nev: kretaResponseBodyParsed["Nev"],
+                cim: kretaResponseBodyParsed["Cimek"][0],
+                telefon: kretaResponseBodyParsed["Telefonszam"],
+                email: kretaResponseBodyParsed["EmailCim"],
+            };
+            res.status(200)
+                .render(__dirname + "/views/" + "index", { data: data });
+        }
+        catch (e) {
+            res.status(503)
+                .render(__dirname + "/views/" + "error");
+        }
     });
 });
 app.get("/:inst/:user([0-9]{11})/:pass/timetable/:date", async (req, res) => {
@@ -55,52 +67,58 @@ app.get("/:inst/:user([0-9]{11})/:pass/timetable/:date", async (req, res) => {
     let firstDateFinal = `${firstDate.getFullYear()}-${firstDate.getMonth() + 1}-${firstDate.getDate()}`;
     let nextDateFinal = `${nextDate.getFullYear()}-${nextDate.getMonth() + 1}-${nextDate.getDate()}`;
     request(`${kretaAPIServer}gettimetable?username=${req.params.user}&password=${req.params.pass}&institude=${req.params.inst}&fromdate=${firstDateFinal}&todate=${nextDateFinal}`, function (error, response, body) {
-        let kretaResponseBodyParsed = JSON.parse(body);
-        for (let i = 0; i < kretaResponseBodyParsed.length; i++) {
-            kretaResponseBodyParsed[i].Oraszam = kretaResponseBodyParsed[i].Oraszam;
+        try {
+            let kretaResponseBodyParsed = JSON.parse(body);
+            for (let i = 0; i < kretaResponseBodyParsed.length; i++) {
+                kretaResponseBodyParsed[i].Oraszam = kretaResponseBodyParsed[i].Oraszam;
+            }
+            let sorted = kretaResponseBodyParsed.sort(function (a, b) { return a.Oraszam - b.Oraszam; });
+            let table = [];
+            let tableDone = "";
+            for (let i = 0; i < sorted.length; i++) {
+                table.push("<td>" + sorted[i]["Nev"] + "</td><td>" + sorted[i]["TanarNeve"] + "</td><td>" + sorted[i]["TeremNeve"] + "</td>");
+            }
+            for (let i = 0; i < table.length; i++) {
+                tableDone += "<tr>" + table[i] + "</tr>";
+            }
+            tableDone = `
+          <table class="table table-bordered w-auto mx-auto mt-4" id="timetable">
+              <thead>
+                  <th scope="col" class="text-center">Tantárgy</th>
+                  <th scope="col" class="text-center">Tanár Neve</th>
+                  <th scope="col" class="text-center">Terem</th>
+              </thead>
+              <tbody>
+                  <td>${tableDone}</td>
+              </tbody>
+          </table>
+      `.replace("undefined", '').substring(8);
+            const tableTemplate = `
+          <table class="table table-bordered w-auto mx-auto mt-4" id="timetable">
+              <thead>
+                  <th scope="col" class="text-center">Tantárgy</th>
+                  <th scope="col" class="text-center">Tanár Neve</th>
+                  <th scope="col" class="text-center">Terem</th>
+              </thead>
+              <tbody>
+                  <td></td>
+              </tbody>
+          </table>
+      `.replace("undefined", '').substring(8);
+            if (tableDone == tableTemplate) {
+                tableDone = `<p class="text-center fs-3">Nincsenek óráid! 🎉</p>`;
+            }
+            let data = {
+                table: tableDone,
+                date: `${req.params.date}`
+            };
+            res.status(200)
+                .render(__dirname + "/views/" + "timetable", { data: data });
         }
-        let sorted = kretaResponseBodyParsed.sort(function (a, b) { return a.Oraszam - b.Oraszam; });
-        let table = [];
-        let tableDone = "";
-        for (let i = 0; i < sorted.length; i++) {
-            table.push("<td>" + sorted[i]["Nev"] + "</td><td>" + sorted[i]["TanarNeve"] + "</td><td>" + sorted[i]["TeremNeve"] + "</td>");
+        catch (e) {
+            res.status(503)
+                .render(__dirname + "/views/" + "error");
         }
-        for (let i = 0; i < table.length; i++) {
-            tableDone += "<tr>" + table[i] + "</tr>";
-        }
-        tableDone = `
-        <table class="table table-bordered w-auto mx-auto mt-4" id="timetable">
-            <thead>
-                <th scope="col" class="text-center">Tantárgy</th>
-                <th scope="col" class="text-center">Tanár Neve</th>
-                <th scope="col" class="text-center">Terem</th>
-            </thead>
-            <tbody>
-                <td>${tableDone}</td>
-            </tbody>
-        </table>
-    `.replace("undefined", '').substring(8);
-        const tableTemplate = `
-        <table class="table table-bordered w-auto mx-auto mt-4" id="timetable">
-            <thead>
-                <th scope="col" class="text-center">Tantárgy</th>
-                <th scope="col" class="text-center">Tanár Neve</th>
-                <th scope="col" class="text-center">Terem</th>
-            </thead>
-            <tbody>
-                <td></td>
-            </tbody>
-        </table>
-    `.replace("undefined", '').substring(8);
-        if (tableDone == tableTemplate) {
-            tableDone = `<p class="text-center fs-3">Nincsenek óráid! 🎉</p>`;
-        }
-        let data = {
-            table: tableDone,
-            date: `${req.params.date}`
-        };
-        res.status(200)
-            .render(__dirname + "/views/" + "timetable", { data: data });
     });
 });
 app.listen(3000, () => {
