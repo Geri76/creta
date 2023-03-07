@@ -23,7 +23,9 @@
         <form action="javascript:void(0);">
             <div class="mb-3">
                 <label for="intezmenyid" class="form-label">🏢 Intézmény Azonosító</label>
-                <input type="text" class="form-control" id="intezmenyid" name="cretaintezmenyid">
+                <select class="form-select" id="intezmenyid">
+                    <%- data.institudes %>
+                </select>
             </div>
             <div class="mb-3">
                 <label for="felhasznalonev" class="form-label">👤 Felhasználónév (Oktatási Azonosító)</label>

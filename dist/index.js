@@ -11,8 +11,41 @@ app.get("/", async (req, res) => {
     res.redirect("/login");
 });
 app.get("/login", async (req, res) => {
-    res.status(200)
-        .render(__dirname + "/views/" + "login");
+    await request({
+        url: "https://kretaglobalmobileapi2.ekreta.hu/api/v3/Institute",
+        headers: {
+            "apiKey": "7856d350-1fda-45f5-822d-e1a2f3f1acf0"
+        }
+    }, (error, response, body) => {
+        try {
+            let kretaResponseBody = body;
+            let kretaResponseBodyParsed = JSON.parse(kretaResponseBody);
+            kretaResponseBodyParsed.sort((a, b) => {
+                if (a.name < b.name) {
+                    return -1;
+                }
+                if (a.name > b.name) {
+                    return 1;
+                }
+                return 0;
+            });
+            let institudes = "";
+            for (let i = 0; i < kretaResponseBodyParsed.length; i++) {
+                let institudeName = kretaResponseBodyParsed[i]["name"];
+                let institudeCode = kretaResponseBodyParsed[i]["instituteCode"];
+                institudes += `<option value="${institudeCode}">${institudeName}</option>`;
+            }
+            const data = {
+                institudes: institudes
+            };
+            res.status(200)
+                .render(__dirname + "/views/" + "login", { data: data });
+        }
+        catch (e) {
+            res.status(503)
+                .render(__dirname + "/views/" + "error");
+        }
+    });
 });
 app.get("/settings", async (req, res) => {
     res.status(200)
@@ -66,13 +99,13 @@ app.get("/:inst/:user([0-9]{11})/:pass/timetable/:date", async (req, res) => {
     nextDate.setDate(firstDate.getDate() + 1);
     let firstDateFinal = `${firstDate.getFullYear()}-${firstDate.getMonth() + 1}-${firstDate.getDate()}`;
     let nextDateFinal = `${nextDate.getFullYear()}-${nextDate.getMonth() + 1}-${nextDate.getDate()}`;
-    request(`${kretaAPIServer}gettimetable?username=${req.params.user}&password=${req.params.pass}&institude=${req.params.inst}&fromdate=${firstDateFinal}&todate=${nextDateFinal}`, function (error, response, body) {
+    request(`${kretaAPIServer}gettimetable?username=${req.params.user}&password=${req.params.pass}&institude=${req.params.inst}&fromdate=${firstDateFinal}&todate=${nextDateFinal}`, (error, response, body) => {
         try {
             let kretaResponseBodyParsed = JSON.parse(body);
             for (let i = 0; i < kretaResponseBodyParsed.length; i++) {
                 kretaResponseBodyParsed[i].Oraszam = kretaResponseBodyParsed[i].Oraszam;
             }
-            let sorted = kretaResponseBodyParsed.sort(function (a, b) { return a.Oraszam - b.Oraszam; });
+            let sorted = kretaResponseBodyParsed.sort((a, b) => { return a.Oraszam - b.Oraszam; });
             let table = [];
             let tableDone = "";
             for (let i = 0; i < sorted.length; i++) {
