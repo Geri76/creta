@@ -15,6 +15,19 @@
 
             window.location.href = `${window.location.href.replace("login", "")}${intezmenyid}/${felhasznalonev}/${jelszo}`;
         }
+
+        function tryLogin() {
+            if (localStorage.getItem("instant-login") == "true") {
+                if (localStorage.getItem("instant-login-instid") && localStorage.getItem("instant-login-username") && localStorage.getItem("instant-login-passwd")) {
+                    var intezmenyid = localStorage.getItem("instant-login-instid");
+                    var felhasznalonev = localStorage.getItem("instant-login-username");
+                    var jelszo = localStorage.getItem("instant-login-passwd");
+
+                    window.location.href = `${window.location.href.replace("login", "")}${intezmenyid}/${felhasznalonev}/${jelszo}`;
+                }
+            }
+        }
+        tryLogin();
     </script>
 </head>
 <body id="main-cont">
@@ -34,15 +47,20 @@
                 <input type="text" class="form-control" id="jelszo" name="cretajelszo">
             </div>
             <div class="mb-3">
-                <button class="btn btn-primary mb-3 w-100" id="login">Bejelentkezés</button>
-            </div>
-            <div class="mb-3">
-                <button class="btn btn-secondary w-100" onclick="window.location.href = window.location.href.replace('login', 'settings')">Beállítások</button>
             </div>
         </form>
+        <div class="d-flex position-absolute bottom-0 start-50 translate-middle-x w-100">
+            <div class="flex-fill">
+                <button class="btn btn-primary fs-5 rounded-0 w-100" id="settings">Beállítások</button>
+            </div>
+            <div class="flex-fill">
+                <button class="btn btn-success fs-5 rounded-0 w-100" id="login">Bejelentkezés</button>
+            </div>
+        </div>
     </div>
     <script>
         const loginButton = document.getElementById("login");
+        const settingButton = document.getElementById("settings");
         const cont = document.getElementById("main-cont");
 
         if (localStorage.getItem("dark-mode") == "true") {
@@ -50,44 +68,27 @@
             cont.style.color = "#ffffff";
         }
 
-        loginButton.addEventListener("click", function(e) {
+        settingButton.addEventListener("click", () => {
+            window.location.href = window.location.href.replace('login', 'settings')
+        });
 
+        loginButton.addEventListener("click", () => {
             if (document.getElementById("intezmenyid").value == "" || document.getElementById("felhasznalonev").value == "" || document.getElementById("jelszo").value == "") {
                 alert("Minden mező kitöltése kötelező!");
             } else {
-                if (localStorage.getItem("instant-login") == "true") {
-                    var intezmenyid = document.getElementById("intezmenyid").value;
-                    var felhasznalonev = document.getElementById("felhasznalonev").value;
-                    var jelszo = document.getElementById("jelszo").value;
+                var intezmenyid = document.getElementById("intezmenyid").value;
+                var felhasznalonev = document.getElementById("felhasznalonev").value;
+                var jelszo = document.getElementById("jelszo").value;
 
+                if (localStorage.getItem("instant-login") == "true") {
                     localStorage.setItem("instant-login-instid", intezmenyid);
                     localStorage.setItem("instant-login-username", felhasznalonev);
                     localStorage.setItem("instant-login-passwd", jelszo);
-
-                    window.location.href = `${window.location.href.replace("login", "")}${intezmenyid}/${felhasznalonev}/${jelszo}`;
-                } else {
-                    var intezmenyid = document.getElementById("intezmenyid").value;
-                    var felhasznalonev = document.getElementById("felhasznalonev").value;
-                    var jelszo = document.getElementById("jelszo").value;
-
-                    window.location.href = `${window.location.href.replace("login", "")}${intezmenyid}/${felhasznalonev}/${jelszo}`;
                 }
+
+                window.location.href = `${window.location.href.replace("login", "")}${intezmenyid}/${felhasznalonev}/${jelszo}`;
             }
         });
-
-        function tryLogin() {
-            if (localStorage.getItem("instant-login") == "true") {
-                if (localStorage.getItem("instant-login-instid") && localStorage.getItem("instant-login-username") && localStorage.getItem("instant-login-passwd")) {
-                    var intezmenyid = localStorage.getItem("instant-login-instid");
-                    var felhasznalonev = localStorage.getItem("instant-login-username");
-                    var jelszo = localStorage.getItem("instant-login-passwd");
-
-                    window.location.href = `${window.location.href.replace("login", "")}${intezmenyid}/${felhasznalonev}/${jelszo}`;
-                }
-            }
-        }
-
-        tryLogin();
     </script>
 </body>
 </html>
