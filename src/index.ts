@@ -19,45 +19,8 @@ app.get("/", async (req: any, res: any) => {
 // Login
 
 app.get("/login", async (req: any, res: any) => {
-  await request({
-    url: "https://kretaglobalmobileapi2.ekreta.hu/api/v3/Institute",
-    headers: {
-      "apiKey": "7856d350-1fda-45f5-822d-e1a2f3f1acf0"
-    }
-  }, (error: any, response: any, body: any) => {
-    try {
-      let kretaResponseBody: any = body;
-      let kretaResponseBodyParsed: any = JSON.parse(kretaResponseBody);
-
-      kretaResponseBodyParsed.sort((a: any, b: any) => {
-        if (a.name < b.name) {
-          return -1;
-        }
-        if (a.name > b.name) {
-          return 1;
-        }
-        return 0;
-      });
-  
-      let institudes = "";
-  
-      for (let i = 0; i < kretaResponseBodyParsed.length; i++) {
-        let institudeName = kretaResponseBodyParsed[i]["name"];
-        let institudeCode = kretaResponseBodyParsed[i]["instituteCode"];
-        institudes += `<option value="${institudeCode}">${institudeName}</option>`;
-      }
-  
-      const data = {
-        institudes: institudes
-      }
-  
-      res.status(200)
-        .render(__dirname + "/views/" + "login", {data: data});
-    } catch (e) {
-      res.status(503)
-        .render(__dirname + "/views/" + "error");
-    }
-  });
+  res.status(200)
+    .render(__dirname + "/views/" + "login");
 });
 
 // Settings
