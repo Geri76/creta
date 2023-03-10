@@ -10,6 +10,12 @@ app.use(favicon(path.join(__dirname, 'views', 'images', 'creta.png')));
 
 const kretaAPIServer: any = process.env.KRETA_API_SERVER || "http://budapesti.flacker.net:3400/";
 
+// Resolve week day
+
+function resolveDay(dayNum: number) {
+  return ["Hétfő","Kedd","Szerda","Csütörtök","Péntek","Szombat","Vasárnap"][dayNum-1];
+}
+
 // Root
 
 app.get("/", async (req: any, res: any) => {
@@ -89,6 +95,8 @@ app.get("/:inst/:user([0-9]{11})/:pass/timetable/:date", async (req: any, res: a
   let firstDateFinal = `${firstDate.getFullYear()}-${firstDate.getMonth()+1}-${firstDate.getDate()}`;
   let nextDateFinal = `${nextDate.getFullYear()}-${nextDate.getMonth()+1}-${nextDate.getDate()}`;
 
+  let day = resolveDay(firstDate.getDay());
+
   request(`${kretaAPIServer}gettimetable?username=${req.params.user}&password=${req.params.pass}&institude=${req.params.inst}&fromdate=${firstDateFinal}&todate=${nextDateFinal}`, (error: any, response: any, body: any) => {
     try {
       let kretaResponseBodyParsed: any = JSON.parse(body);
@@ -110,20 +118,20 @@ app.get("/:inst/:user([0-9]{11})/:pass/timetable/:date", async (req: any, res: a
       }
 
       tableDone = `
-          <table class="table table-bordered w-auto mx-auto mt-4" id="timetable">
+          <table class="table table-bordered table-striped w-auto mx-auto mt-4" id="timetable">
               <thead>
                   <th scope="col" class="text-center">Tantárgy</th>
                   <th scope="col" class="text-center">Tanár Neve</th>
                   <th scope="col" class="text-center">Terem</th>
               </thead>
               <tbody>
-                  <td>${tableDone}</td>
+                  ${tableDone}
               </tbody>
           </table>
       `.replace("undefined", '').substring(8);
 
       const tableTemplate = `
-          <table class="table table-bordered w-auto mx-auto mt-4" id="timetable">
+          <table class="table table-bordered table-striped w-auto mx-auto mt-4" id="timetable">
               <thead>
                   <th scope="col" class="text-center">Tantárgy</th>
                   <th scope="col" class="text-center">Tanár Neve</th>
@@ -142,7 +150,8 @@ app.get("/:inst/:user([0-9]{11})/:pass/timetable/:date", async (req: any, res: a
 
       let data = {
         table: tableDone,
-        date: `${req.params.date}`
+        date: `${req.params.date}`,
+        day: day
       };
 
       res.status(200)

@@ -53,7 +53,7 @@
             </div>
         </div>        
         <div class="container">
-            <p class="text-center fw-bold fs-4 mt-3"><%- data.date %></p>
+            <p class="text-center fw-bold fs-4 mt-3"><%- data.date %> - <%- data.day %></p>
         </div>
         <%- data.table %>
     </div>
@@ -66,6 +66,7 @@
             cont.style.backgroundColor = "#262626";
             cont.style.color = "#ffffff";
             list.style.color = "#ffffff";
+            list.classList.add("table-dark");
         }
     </script>
 </body>
