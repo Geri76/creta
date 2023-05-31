@@ -1,7 +1,13 @@
 {
     "compilerOptions": {
         "outDir": "dist/",
-        "removeComments": true
+        "removeComments": true,
+        "module": "CommonJS",
+        "target": "ES2016",
+        "strict": true,
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+        "forceConsistentCasingInFileNames": true
     },
     "include":[ 
         "src/**/*"

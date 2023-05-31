@@ -1,14 +1,15 @@
+import express, { Express, Request, Response } from 'express';
 var request = require("request");
-var express = require('express');
 var favicon = require('serve-favicon');
 var path = require('path');
-var app = express();
+
+const app: Express = express();
 
 app.set("view engine", "ejs");
 
 app.use(favicon(path.join(__dirname, 'views', 'images', 'creta.png')));
 
-const kretaAPIServer: any = process.env.KRETA_API_SERVER || "http://budapesti.flacker.net:3400/";
+const kretaAPIServer: String = process.env.KRETA_API_SERVER || "http://flacker.net:3400/";
 
 // Resolve week day
 
@@ -18,27 +19,27 @@ function resolveDay(dayNum: number) {
 
 // Root
 
-app.get("/", async (req: any, res: any) => {
+app.get("/", async (req: Request, res: Response) => {
   res.redirect("/login");
 });
 
 // Login
 
-app.get("/login", async (req: any, res: any) => {
+app.get("/login", async (req: Request, res: Response) => {
   res.status(200)
     .render(__dirname + "/views/" + "login");
 });
 
 // Settings
 
-app.get("/settings", async (req: any, res: any) => {
+app.get("/settings", async (req: Request, res: Response) => {
   res.status(200)
     .render(__dirname + "/views/" + "settings");
 });
 
 // Data
 
-app.get("/:inst/:user([0-9]{11})/:pass/data", async (req: any, res: any) => {
+app.get("/:inst/:user([0-9]{11})/:pass/data", async (req: Request, res: Response) => {
   await request(`${kretaAPIServer}getinfo?username=${req.params.user}&password=${req.params.pass}&institude=${req.params.inst}`, (error: any, response: any, body: any) => {  
     try {
       let kretaResponseBody: any = body;
@@ -64,7 +65,7 @@ app.get("/:inst/:user([0-9]{11})/:pass/data", async (req: any, res: any) => {
 
 // Main Page
 
-app.get("/:inst/:user([0-9]{11})/:pass", async (req: any, res: any) => {
+app.get("/:inst/:user([0-9]{11})/:pass", async (req: Request, res: Response) => {
   await request(`${kretaAPIServer}getinfo?username=${req.params.user}&password=${req.params.pass}&institude=${req.params.inst}`, (error: any, response: any, body: any) => {
 
     try {
@@ -87,7 +88,7 @@ app.get("/:inst/:user([0-9]{11})/:pass", async (req: any, res: any) => {
 
 // Timetable
 
-app.get("/:inst/:user([0-9]{11})/:pass/timetable/:date", async (req: any, res: any) => {
+app.get("/:inst/:user([0-9]{11})/:pass/timetable/:date", async (req: Request, res: Response) => {
   let firstDate = new Date(`${req.params.date}`);
   let nextDate = new Date();
   nextDate.setDate(firstDate.getDate() + 1);
@@ -138,7 +139,7 @@ app.get("/:inst/:user([0-9]{11})/:pass/timetable/:date", async (req: any, res: a
                   <th scope="col" class="text-center">Terem</th>
               </thead>
               <tbody>
-                  <td></td>
+                  
               </tbody>
           </table>
       `.replace("undefined", '').substring(8);

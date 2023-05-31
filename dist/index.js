@@ -1,28 +1,41 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = __importDefault(require("express"));
 var request = require("request");
-var express = require('express');
 var favicon = require('serve-favicon');
 var path = require('path');
-var app = express();
+const app = (0, express_1.default)();
 app.set("view engine", "ejs");
 app.use(favicon(path.join(__dirname, 'views', 'images', 'creta.png')));
-const kretaAPIServer = process.env.KRETA_API_SERVER || "http://budapesti.flacker.net:3400/";
+const kretaAPIServer = process.env.KRETA_API_SERVER || "http://flacker.net:3400/";
 function resolveDay(dayNum) {
     return ["Hétfő", "Kedd", "Szerda", "Csütörtök", "Péntek", "Szombat", "Vasárnap"][dayNum - 1];
 }
-app.get("/", async (req, res) => {
+app.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     res.redirect("/login");
-});
-app.get("/login", async (req, res) => {
+}));
+app.get("/login", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     res.status(200)
         .render(__dirname + "/views/" + "login");
-});
-app.get("/settings", async (req, res) => {
+}));
+app.get("/settings", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     res.status(200)
         .render(__dirname + "/views/" + "settings");
-});
-app.get("/:inst/:user([0-9]{11})/:pass/data", async (req, res) => {
-    await request(`${kretaAPIServer}getinfo?username=${req.params.user}&password=${req.params.pass}&institude=${req.params.inst}`, (error, response, body) => {
+}));
+app.get("/:inst/:user([0-9]{11})/:pass/data", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    yield request(`${kretaAPIServer}getinfo?username=${req.params.user}&password=${req.params.pass}&institude=${req.params.inst}`, (error, response, body) => {
         try {
             let kretaResponseBody = body;
             let kretaResponseBodyParsed = JSON.parse(kretaResponseBody);
@@ -42,9 +55,9 @@ app.get("/:inst/:user([0-9]{11})/:pass/data", async (req, res) => {
                 .render(__dirname + "/views/" + "error");
         }
     });
-});
-app.get("/:inst/:user([0-9]{11})/:pass", async (req, res) => {
-    await request(`${kretaAPIServer}getinfo?username=${req.params.user}&password=${req.params.pass}&institude=${req.params.inst}`, (error, response, body) => {
+}));
+app.get("/:inst/:user([0-9]{11})/:pass", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    yield request(`${kretaAPIServer}getinfo?username=${req.params.user}&password=${req.params.pass}&institude=${req.params.inst}`, (error, response, body) => {
         try {
             let kretaResponseBodyParsed = JSON.parse(body);
             var data = {
@@ -62,8 +75,8 @@ app.get("/:inst/:user([0-9]{11})/:pass", async (req, res) => {
                 .render(__dirname + "/views/" + "error");
         }
     });
-});
-app.get("/:inst/:user([0-9]{11})/:pass/timetable/:date", async (req, res) => {
+}));
+app.get("/:inst/:user([0-9]{11})/:pass/timetable/:date", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     let firstDate = new Date(`${req.params.date}`);
     let nextDate = new Date();
     nextDate.setDate(firstDate.getDate() + 1);
@@ -105,7 +118,7 @@ app.get("/:inst/:user([0-9]{11})/:pass/timetable/:date", async (req, res) => {
                   <th scope="col" class="text-center">Terem</th>
               </thead>
               <tbody>
-                  <td></td>
+                  
               </tbody>
           </table>
       `.replace("undefined", '').substring(8);
@@ -125,7 +138,7 @@ app.get("/:inst/:user([0-9]{11})/:pass/timetable/:date", async (req, res) => {
                 .render(__dirname + "/views/" + "error");
         }
     });
-});
+}));
 app.listen(3000, () => {
     console.log("\nServing creta!\n");
 });
