@@ -1,4 +1,4 @@
- [![Creta logo](http://creta.flacker.net/favicon.ico)](http://creta.flacker.net)
+ [![Creta logo](https://raw.githubusercontent.com/Geri76/creta/dist/dist/views/images/creta.ico)](http://creta.flacker.net)
 
 # Creta
 Egy magyar nyelvű eKréta kliens.
